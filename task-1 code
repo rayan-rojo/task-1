@@ -1,0 +1,97 @@
+# Student Exam Scores Data Analysis Project
+
+# -------------------------------------------
+# 📂 Step 1: Data Loading
+# -------------------------------------------
+
+# Importing required libraries
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset with the correct separator
+student_data = pd.read_csv("student-mat.csv", sep=';')
+
+# Display the first few rows
+print("First few rows of the dataset:")
+print(student_data.head())
+
+# -------------------------------------------
+# 📊 Step 2: Data Exploration
+# -------------------------------------------
+
+# Check for missing values
+print("\nMissing values per column:")
+print(student_data.isnull().sum())
+
+# Display data types
+print("\nData types of columns:")
+print(student_data.dtypes)
+
+# Display dataset shape
+print("\nDataset shape:", student_data.shape)
+
+# -------------------------------------------
+# 🧹 Step 3: Data Cleaning
+# -------------------------------------------
+
+# Drop duplicate rows
+student_data = student_data.drop_duplicates()
+
+# Check for missing values again (none expected in this dataset)
+print("\nMissing values after cleaning:")
+print(student_data.isnull().sum())
+
+# -------------------------------------------
+# 📈 Step 4: Data Analysis Questions
+# -------------------------------------------
+
+# 1. Average final grade (G3)
+avg_G3 = student_data['G3'].mean()
+print("\n1. Average final grade (G3):", avg_G3)
+
+# 2. Number of students scoring above 15 in G3
+above_15_count = student_data[student_data['G3'] > 15].shape[0]
+print("2. Number of students with G3 > 15:", above_15_count)
+
+# 3. Correlation between study time and final grade (G3)
+study_G3_corr = student_data['studytime'].corr(student_data['G3'])
+print("3. Correlation between study time and G3:", study_G3_corr)
+
+# 4. Which gender has a higher average final grade (G3)
+gender_avg_G3 = student_data.groupby('sex')['G3'].mean()
+print("\n4. Average G3 by gender:")
+print(gender_avg_G3)
+
+# -------------------------------------------
+# 📊 Step 5: Data Visualization
+# -------------------------------------------
+
+# 1. Histogram of final grades (G3)
+plt.figure(figsize=(8, 5))
+plt.hist(student_data['G3'], bins=15, color='skyblue', edgecolor='black')
+plt.title('Distribution of Final Grades (G3)')
+plt.xlabel('Final Grade (G3)')
+plt.ylabel('Number of Students')
+plt.grid(True)
+plt.show()
+
+# 2. Scatter plot between study time and final grade (G3)
+plt.figure(figsize=(8, 5))
+plt.scatter(student_data['studytime'], student_data['G3'], alpha=0.6, color='green')
+plt.title('Study Time vs Final Grade')
+plt.xlabel('Study Time (hours per week)')
+plt.ylabel('Final Grade (G3)')
+plt.grid(True)
+plt.show()
+
+# 3. Bar chart comparing average G3 by gender
+plt.figure(figsize=(6, 5))
+gender_avg_G3.plot(kind='bar', color=['orange', 'lightblue'])
+plt.title('Average Final Grade (G3) by Gender')
+plt.ylabel('Average G3')
+plt.xlabel('Gender')
+plt.xticks(rotation=0)
+plt.grid(axis='y')
+plt.show()
